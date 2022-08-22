@@ -1,0 +1,465 @@
+{
+	"info": {
+		"_postman_id": "be9575d1-452f-40cd-af8a-168ecf0579c5",
+		"name": "FLYY-Partner-Regression",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20403533"
+	},
+	"item": [
+		{
+			"name": "Get the list of available wallet types",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"pm.globals.set(\"Wallet_id\", jsonData.items[4].id);\r",
+							"console.log(pm.globals.get(\"Wallet_id\"));\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL1}}/v1/{{partner-id}}/wallet_types",
+					"protocol": "https",
+					"host": [
+						"{{URL1}}"
+					],
+					"path": [
+						"v1",
+						"{{partner-id}}",
+						"wallet_types"
+					]
+				},
+				"description": "Use this endpoint retrieves all wallet_types being used in your FLYY account"
+			},
+			"response": []
+		},
+		{
+			"name": "Initiate Credit request for a user's wallet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"pm.globals.set(\"Request_id\", jsonData.request_id);\r",
+							"pm.globals.set(\"Value1\", jsonData.value);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{partner-key}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "PARTNER-KEY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"ext_user_id\": \"{{ext-user-id}}\", \"wallet_type_id\":{{Wallet_id}}, \"credit_value\": 20 }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL1}}/v1/{{partner-id}}/user_wallet/credit/initiate",
+					"protocol": "https",
+					"host": [
+						"{{URL1}}"
+					],
+					"path": [
+						"v1",
+						"{{partner-id}}",
+						"user_wallet",
+						"credit",
+						"initiate"
+					]
+				},
+				"description": "Use this endpoint to initiate credit request into user's wallet of the specified type"
+			},
+			"response": []
+		},
+		{
+			"name": "Credit value to user's wallet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{partner-key}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "PARTNER-KEY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"request_id\": \"{{Request_id}}\", \"ext_user_id1\": \"{{ext-user-id}}\", \"wallet_type_id\": \"{{Wallet_id}}\", \"credit_value\":{{Value1}}, \"credit_reason\": \"Invite and Earn\", \"firebase_token\": \"\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL1}}/v1/{{partner-id}}/user_wallet/credit",
+					"protocol": "https",
+					"host": [
+						"{{URL1}}"
+					],
+					"path": [
+						"v1",
+						"{{partner-id}}",
+						"user_wallet",
+						"credit"
+					]
+				},
+				"description": "Use this endpoint to credit any amount to user's wallet of the specified type "
+			},
+			"response": []
+		},
+		{
+			"name": "Get credit statement for the specified wallet type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL1}}/v1/{{partner-id}}/user/{{ext-user-id}}/wallet/{{Wallet_id}}/credits?page=1&per_page=10",
+					"protocol": "https",
+					"host": [
+						"{{URL1}}"
+					],
+					"path": [
+						"v1",
+						"{{partner-id}}",
+						"user",
+						"{{ext-user-id}}",
+						"wallet",
+						"{{Wallet_id}}",
+						"credits"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "per_page",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Use this endpoint to retrieve credit statement of the specified wallet type"
+			},
+			"response": []
+		},
+		{
+			"name": "Get wallet balance of a user in the specified wallet type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{partner-key}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "PARTNER-KEY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL1}}/v1/{{partner-id}}/user/{{ext-user-id}}/wallet/{{Wallet_id}}",
+					"protocol": "https",
+					"host": [
+						"{{URL1}}"
+					],
+					"path": [
+						"v1",
+						"{{partner-id}}",
+						"user",
+						"{{ext-user-id}}",
+						"wallet",
+						"{{Wallet_id}}"
+					]
+				},
+				"description": "Use this endpoint to fetch balance of a user in the specified wallet type"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Referral Link",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{partner-key}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "PARTNER-KEY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{URL1}}/v1/{{partner-id}}/user/{{ext-user-id}}/referral_link",
+					"protocol": "https",
+					"host": [
+						"{{URL1}}"
+					],
+					"path": [
+						"v1",
+						"{{partner-id}}",
+						"user",
+						"{{ext-user-id}}",
+						"referral_link"
+					]
+				},
+				"description": "Use this endpoint to get a user's referral link from the Flyy backend"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{URL1}}/v1/{{partner-id}}/user/{{ext-user-id}}",
+					"protocol": "https",
+					"host": [
+						"{{URL1}}"
+					],
+					"path": [
+						"v1",
+						"{{partner-id}}",
+						"user",
+						"{{ext-user-id}}"
+					]
+				},
+				"description": "Use this endpoint to fetch user details from the Flyy backend"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{partner-key}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "partner-key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "partner-id",
+			"value": "b9b614e4c49bae9ed834",
+			"type": "string"
+		},
+		{
+			"key": "partner-key",
+			"value": "YPJMcAwH5CuWmCUAtlYj8qR3vQfIj4nW72p8uxsJ",
+			"type": "string"
+		},
+		{
+			"key": "partner-key-k",
+			"value": "PARTNER-KEY",
+			"type": "string"
+		},
+		{
+			"key": "URL1",
+			"value": "stage-partner-api.theflyy.com",
+			"type": "string"
+		},
+		{
+			"key": "ext-user-id",
+			"value": "supriyatest",
+			"type": "string"
+		}
+	]
+}
